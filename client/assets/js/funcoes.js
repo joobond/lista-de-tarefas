@@ -81,6 +81,7 @@ document.querySelector('#btn-adicionar').addEventListener('click', function (eve
     //Limpando os campos do formulário
     document.querySelector('#descricao-tarefa').value = '';
     document.querySelector('#data-tarefa').value = '';
+    document.querySelector('#status-tarefa').checked = false;
 });
 
 //Quando o botão inserir for clicado
@@ -95,12 +96,16 @@ function inserir() {
     //Capturar os dados do formulário
     let descricao = document.querySelector('#descricao-tarefa').value;
     let data = document.querySelector('#data-tarefa').value;
+    let realizado = document.querySelector('#status-tarefa').checked;
+    console.log(realizado);
+    
 
     //Criando um objeto tarefa
     let tarefa = {};
     tarefa.descricao = descricao;
     tarefa.data = data;
-    tarefa.realizado = false;
+    tarefa.realizado = realizado;
+    
 
     //Inserir uma nova tarefa
     let promise = inserirTarefa(tarefa);
@@ -122,10 +127,11 @@ function montarFormularioAlterar(id) {
     let promise = listarTarefaPorId(id);
     promise
         .then(function (tarefa) {
-
+            console.log(tarefa);
             document.querySelector('#idTarefa').value = tarefa.id;
             document.querySelector('#descricao-tarefa').value = tarefa.descricao;
             document.querySelector('#data-tarefa').value = dataToInput(tarefa.data);
+            document.querySelector('#status-tarefa').checked = tarefa.realizado;
 
             //Carrega o modal
             $('#modal').modal('show');
@@ -153,6 +159,9 @@ document.querySelector('#btn-alterar').addEventListener('click', function(event)
     //Dados do formulário
     tarefa.descricao = document.querySelector('#descricao-tarefa').value;
     tarefa.data = document.querySelector('#data-tarefa').value;
+    tarefa.realizado = document.querySelector('#status-tarefa').checked;
+    console.log(tarefa.realizado);
+    
 
     let promisse = alterarTarefa(tarefa);
     promisse
